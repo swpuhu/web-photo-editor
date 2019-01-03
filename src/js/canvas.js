@@ -11,39 +11,46 @@ export default function (width, height) {
   util.addClass(doc, ['canvas-div']);
   let canvas = document.createElement('canvas');
   util.appendChildren(doc, canvas);
-
-  /**
-   * @type {WebGLRenderingContext}
-   */
   let gl = canvas.getContext('webgl');
   gl = initGL(gl, VERTEX_SHADER_SOURCE, FRAG_SHADER_SOURCE);
-  draw();
-  function draw() {
+  initCanvas();
+
+  function initCanvas() {
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.useProgram(gl.program);
-    let vertices = new Float32Array([
-      -0.5, 0.5, 0.0, 1.0,
-      -0.5, -0.5, 0.0, 0.0,
-      0.5, 0.5, 1.0, 1.0,
-      0.5, -0.5, 1.0, 0.0,
-    ]);
-    let n = initVertexBuffer(gl, vertices);
-    initTexture(gl, n, './assets/dengmi.mp4', 'video');
   }
 
-  function drawImage(img, sx, sy, dx = canvas.width, dy = canvas.height) {
-    let vertices = new Float32Array([
-      -1.0, 1.0, 0.0, 1.0,
-      -1.0, -1.0, 0.0, 0.0,
-      1.0, 1.0, 1.0, 1.0,
-      1.0, -1.0, 1.0, 0.0,
-    ]);
+  /**
+   *
+   * @param {HTMLImageElement} img
+   * @param {number} sx
+   * @param {number} sy
+   * @param {number} dWidth
+   * @param {number} dHeight
+   */
+  function drawImage(img, sx = 0, sy = 0, dWidth , dHeight) {
+    let width;
+    let height;
+    console.log(Object.prototype.toString.call(img))
     if (Object.prototype.toString.call(img) === '[object HTMLImageElement]') {
-
-    } else if (Object.prototype.toString.call(img) === '[object HTMLVideoElement]') {
-
+      width = dWidth = img.naturalWidth;
+      height = dHeight = img.naturalHeight;
+    } else {
+      width = dWidth = canvas.width;
+      height = dHeight = canvas.height;
     }
+
+    let vertices = new Float32Array([
+      -1.0, 1.0, sx / width, 1.0 - sy / height,
+      -1.0, -1.0, sx / width, 1.0 - (sy + dHeight) / height,
+      1.0, 1.0, (sx + dWidth) / width, 1.0 - sy / height,
+      1.0, -1.0, (sx + dWidth) / width, 1.0 - (sy + dHeight) / height,
+    ]);
+    let n = initVertexBuffer(gl, vertices);
+    let texture = gl.createTexture();
+    let u_Sampler = gl.getUniformLocation(gl.program, 'u_Sampler');
+    loadTexture(gl, n, texture, u_Sampler, img);
   }
   /**
    *
@@ -119,7 +126,16 @@ export default function (width, height) {
   }
   Object.defineProperties(obj, {
     getElement: {
-      value: getElement
+      value: getElement,
+      writable: false,
+      configurable: false,
+      enumerable: true
+    },
+    drawImage: {
+      value: drawImage,
+      writable: false,
+      configurable: false,
+      enumerable: true
     }
   });
   return obj;
