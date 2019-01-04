@@ -10,6 +10,10 @@ export default function (width, height) {
   let obj = {};
   util.addClass(doc, ['canvas-div']);
   let canvas = document.createElement('canvas');
+  if (width && height) {
+    canvas.width = width;
+    canvas.height = height;
+  }
   util.appendChildren(doc, canvas);
   let gl = canvas.getContext('webgl');
   gl = initGL(gl, VERTEX_SHADER_SOURCE, FRAG_SHADER_SOURCE);
@@ -32,7 +36,6 @@ export default function (width, height) {
   function drawImage(img, sx = 0, sy = 0, dWidth , dHeight) {
     let width;
     let height;
-    console.log(Object.prototype.toString.call(img))
     if (Object.prototype.toString.call(img) === '[object HTMLImageElement]') {
       width = dWidth = img.naturalWidth;
       height = dHeight = img.naturalHeight;
@@ -89,7 +92,6 @@ export default function (width, height) {
       return true;
     } else if (type === 'video') {
       var video = document.createElement('video');
-      // console.log(Object.prototype.toString.call(video));
       video.oncanplaythrough = function () {
         loadTexture(gl, n, texture, u_Sampler, video);
       }
@@ -124,6 +126,9 @@ export default function (width, height) {
   function getElement() {
     return doc;
   }
+  function remove() {
+    doc.remove();
+  }
   Object.defineProperties(obj, {
     getElement: {
       value: getElement,
@@ -133,6 +138,12 @@ export default function (width, height) {
     },
     drawImage: {
       value: drawImage,
+      writable: false,
+      configurable: false,
+      enumerable: true
+    },
+    remove: {
+      value: remove,
       writable: false,
       configurable: false,
       enumerable: true
