@@ -1,0 +1,46 @@
+.menu,
+.sub-menu{
+  width: 120px;
+  background-color: #505050;
+  color: #fff;
+  box-shadow: 1px 1px 5px 1px #000;
+  cursor: default;
+  animation: graduallyDisplay 0.5s ease;
+}
+
+.sub-menu {
+  position: fixed;
+  animation: none;
+}
+
+.menu .menu-item,
+.sub-menu .sub-menu__item {
+  font-size: 12px;
+  padding: 5px;
+}
+
+.menu .menu-item.hover,
+.sub-menu .sub-menu__item.hover {
+  background-color: #66CCFF;
+  color: #fff;
+}
+
+
+.menu .menu-item.line,
+.sub-menu .sub-menu__item.line {
+  border-bottom: 1px solid #FFF;
+}
+
+.menu .menu-item.disabled,
+.sub-menu .sub-menu__item.disabled {
+  color: #bdbabafc
+}
+
+@keyframes graduallyDisplay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

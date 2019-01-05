@@ -1,5 +1,16 @@
 import canvasFunc from './js/canvas.js';
 import Menu from './js/console/menu.js';
+
+// browser behavior reset
+document.addEventListener('selectstart', function (e) {
+  e.preventDefault();
+  return false;
+})
+
+document.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+});
+
 const root = document.getElementById('root');
 let filePicker = document.createElement('input');
 let canvas;
@@ -31,7 +42,61 @@ let menu = Menu([
     },
     callback: function () {
       console.log('hello world');
+    },
+    children: [
+      {
+        title: 'level1-sub',
+        line: true,
+        isAvaliable: function () {
+          return true;
+        },
+        callback: function () {
+          console.log('level1-sub');
+        }
+      },
+      {
+        title: 'level2-sub',
+        line: true,
+        isAvaliable: function () {
+          return false;
+        },
+        callback: function () {
+          console.log('level2-sub');
+        }
+      }
+    ]
+  },
+  {
+    title: 'level2',
+    line: true,
+    isAvaliable: function () {
+      return false;
+    },
+    callback:function () {
+      console.log('level2');
     }
+  },
+  {
+    title: 'level3',
+    line: true,
+    isAvaliable: function () {
+      return true;
+    },
+    callback: function () {
+      console.log('level3');
+    },
+    children: [
+      {
+        title: 'level3-sub1',
+        lien: true,
+        isAvaliable: function () {
+          return true;
+        },
+        callback: function () {
+          console.log('level3-sub1');
+        }
+      }
+    ]
   }
 ]);
 

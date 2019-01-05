@@ -11,46 +11,92 @@ export default function (menuList) {
   let subDoc;
   util.addClass(doc, ['menu']);
   for (let m of menuList) {
+    let disabled;
     let item = document.createElement('div');
     util.addClass(item, [m.className ? m.className : 'menu-item']);
-    if (m.line) {
+    if (m.line && menuList.indexOf(m) !== menuList.length - 1) {
       item.classList.add('line');
     }
     if (!m.isAvaliable()) {
+      disabled = true;
       item.classList.add('disabled');
     }
+
     item.addEventListener('click', function (e) {
-      if (!m.isAvaliable()) {
+      if (disabled) {
         return;
       }
       m.callback && m.callback();
     });
-    if (m.children) {
-      item.addEventListener('mouseenter`', function (e) {
+
+    item.addEventListener('mouseover', function (e) {
+      e.stopPropagation();
+      if (subDoc) {
+        subDoc.remove();
+        subDoc = null;
+      }
+      if (disabled) {
+        return;
+      }
+      item.classList.add('hover');
+      // 添加子级菜单
+      if (m.children) {
         subDoc = document.createElement('div');
+        util.addClass(subDoc, ['sub-menu']);
         for (let c of m.children) {
-          util.addClass(item, [])
+          let _disabled;
+          let _item = document.createElement('div');
+          util.addClass(_item, ['sub-menu__item']);
+          if (c.line && m.children.indexOf(c) !== m.children.length - 1) {
+            _item.classList.add('line');
+          }
+          _item.innerText = c.title;
+          _item.title = c.title;
           if (c.line) {
-            let item = document.createElement('div');
-            util.addClass(item, [c.className ? c.className : 'sub-item']);
+            util.addClass(_item, [c.className ? c.className : 'sub-item']);
           }
-          if (!c.isAvaliable) {
-            item.classList.add('disabled');
+          if (!c.isAvaliable()) {
+            _disabled = true;
+            _item.classList.add('disabled');
           }
-          item.addEventListener('click', function (e) {
-            if (!c.isAvaliable) {
-              return ;
+          _item.addEventListener('click', function (e) {
+            if (_disabled) {
+              return;
             }
             c.callback && c.callback();
           });
-          subDoc.appendChild(item);
+          _item.addEventListener('mouseover', function (e) {
+            e.stopPropagation();
+            if (_disabled) {
+              return ;
+            }
+            _item.classList.add('hover');
+          });
+          _item.addEventListener('mouseleave', function (e) {
+            e.stopPropagation();
+            _item.classList.remove('hover');
+          })
+          subDoc.appendChild(_item);
         }
         document.body.appendChild(subDoc);
-      });
-      item.addEventListener('mouseleave', function (e) {
-        subDoc.remove();
-      });
+        let itemCoordinate = item.getBoundingClientRect();
+        subDoc.style.left = itemCoordinate.left + itemCoordinate.width + 2 + 'px';
+        subDoc.style.top = itemCoordinate.top + 'px';
+
+      }
+    });
+
+    function clearSubMenu (e) {
+      item.classList.remove('hover');
     }
+
+    item.addEventListener('mouseleave', clearSubMenu);
+    document.addEventListener('mouseover', function (e) {
+      if (subDoc) {
+        subDoc.remove();
+        subDoc = null;
+      }
+    });
     item.innerText = m.title;
     item.title = m.title;
     doc.appendChild(item);
