@@ -1,9 +1,10 @@
 .menu,
 .sub-menu{
+  position: fixed;
   width: 120px;
   background-color: #505050;
   color: #fff;
-  box-shadow: 1px 1px 5px 1px #000;
+  box-shadow: 1px 1px 5px 1px #0000003b;
   cursor: default;
   animation: graduallyDisplay 0.5s ease;
 }

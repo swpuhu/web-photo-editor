@@ -1,6 +1,6 @@
-import canvasFunc from './js/canvas.js';
+import Canvas from './js/console/canvas.js';
 import Menu from './js/console/menu.js';
-
+import MenuBar from './js/console/menuBar.js';
 // browser behavior reset
 document.addEventListener('selectstart', function (e) {
   e.preventDefault();
@@ -12,7 +12,10 @@ document.addEventListener('contextmenu', function (e) {
 });
 
 const root = document.getElementById('root');
-let filePicker = document.createElement('input');
+const canvas = Canvas();
+const menuBar = MenuBar();
+root.appendChild(menuBar.getElement());
+/* let filePicker = document.createElement('input');
 let canvas;
 filePicker.type = 'file';
 root.appendChild(filePicker);
@@ -100,4 +103,9 @@ let menu = Menu([
   }
 ]);
 
-document.body.appendChild(menu.getElement());
+document.body.appendChild(menu.getElement()); */
+
+
+window.app = {
+  canvas: canvas
+}

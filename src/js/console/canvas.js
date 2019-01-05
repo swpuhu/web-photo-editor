@@ -1,9 +1,9 @@
-import * as util from './util/util.js';
-import initGL from './gl/initGL.js';
-import {VERTEX_SHADER_SOURCE, FRAG_SHADER_SOURCE} from './gl/GLSL.js';
+import * as util from '../util/util.js';
+import initGL from '../gl/initGL.js';
+import {VERTEX_SHADER_SOURCE, FRAG_SHADER_SOURCE} from '../gl/GLSL.js';
 
 /**
- * @returns {Object}
+ * @return {MyCanvas}
  */
 export default function (width, height) {
   let doc = document.createElement('div');
@@ -13,6 +13,15 @@ export default function (width, height) {
   if (width && height) {
     canvas.width = width;
     canvas.height = height;
+    let scale = width / height;
+    if (width > window.innerWidth) {
+      canvas.style.width = window.innerWidth - 50 + 'px';
+      canvas.style.height = window.innerWidth / scale + 'px';
+    }
+    if (height > window.innerHeight) {
+      canvas.style.height = window.innerHeight - 50 + 'px';
+      canvas.style.width = window.innerHeight * scale + 'px';
+    }
   }
   util.appendChildren(doc, canvas);
   let gl = canvas.getContext('webgl');
@@ -37,13 +46,12 @@ export default function (width, height) {
     let width;
     let height;
     if (Object.prototype.toString.call(img) === '[object HTMLImageElement]') {
-      width = dWidth = img.naturalWidth;
-      height = dHeight = img.naturalHeight;
+      width = img.naturalWidth;
+      height = img.naturalHeight;
     } else {
-      width = dWidth = canvas.width;
-      height = dHeight = canvas.height;
+      width = canvas.width;
+      height = canvas.height;
     }
-
     let vertices = new Float32Array([
       -1.0, 1.0, sx / width, 1.0 - sy / height,
       -1.0, -1.0, sx / width, 1.0 - (sy + dHeight) / height,
@@ -147,6 +155,11 @@ export default function (width, height) {
       writable: false,
       configurable: false,
       enumerable: true
+    },
+    canvas: {
+      get() {
+        return canvas;
+      }
     }
   });
   return obj;

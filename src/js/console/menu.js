@@ -4,6 +4,7 @@ import base from '../util/base.js';
 /**
  *
  * @param {Array<MenuItem>} menuList
+ * @return {Menu}
  */
 export default function (menuList) {
   let obj = Object.create(base);
@@ -27,6 +28,7 @@ export default function (menuList) {
         return;
       }
       m.callback && m.callback();
+      remove();
     });
 
     item.addEventListener('mouseover', function (e) {
@@ -64,6 +66,7 @@ export default function (menuList) {
               return;
             }
             c.callback && c.callback();
+            remove();
           });
           _item.addEventListener('mouseover', function (e) {
             e.stopPropagation();
@@ -108,6 +111,7 @@ export default function (menuList) {
 
   function remove() {
     doc.remove();
+    subDoc && subDoc.remove();
   }
 
   Object.defineProperties(obj, {

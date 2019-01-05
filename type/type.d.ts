@@ -16,6 +16,7 @@ interface SubMenu {
   line: boolean;
   test: any;
 }
+
 declare namespace MenuItem {
   function isAvaliable ():boolean;
   function isHighlight ():boolean;
@@ -24,4 +25,11 @@ declare namespace MenuItem {
   let className: string;
   let children: Array<SubMenu>;
   let line:boolean;
+}
+
+declare namespace MyCanvas {
+  function getElement () : HTMLElement;
+  function remove(): void;
+  function drawImage(img: HTMLElement, sx: number, sy: number, dWidth: number, dHeight: number): void;
+  let canvas: HTMLCanvasElement;
 }
