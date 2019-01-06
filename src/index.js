@@ -1,20 +1,17 @@
-import Canvas from './js/console/canvas.js';
-import Menu from './js/console/menu.js';
-import MenuBar from './js/console/menuBar.js';
+import Panel from './js/console/Panel.js';
 // browser behavior reset
 document.addEventListener('selectstart', function (e) {
   e.preventDefault();
   return false;
-})
+});
 
 document.addEventListener('contextmenu', function (e) {
-  e.preventDefault();
+  // e.preventDefault();
 });
 
 const root = document.getElementById('root');
-const canvas = Canvas();
-const menuBar = MenuBar();
-root.appendChild(menuBar.getElement());
+const panel = Panel();
+root.appendChild(panel.getElement());
 /* let filePicker = document.createElement('input');
 let canvas;
 filePicker.type = 'file';
@@ -104,8 +101,3 @@ let menu = Menu([
 ]);
 
 document.body.appendChild(menu.getElement()); */
-
-
-window.app = {
-  canvas: canvas
-}

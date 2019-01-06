@@ -1,3 +1,65 @@
-body{
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  background: rgb(105, 105, 105);
+}
+*::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  background: rgb(74, 74, 74);
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   background-color: #282828;
+}
+
+.panel .panel-menuBarArea {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  border-bottom: 1px solid rgb(56, 56, 56);
+  background-color: #535353;
+  box-sizing: border-box;
+}
+
+.panel .panel-toolBoxArea {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  bottom: 0;
+  width: 150px;
+  background-color: #535353;
+}
+
+.panel .panel-infoArea {
+  position: absolute;
+  top: 24px;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  background-color: #535353;
+}
+
+.panel .panel-editArea {
+  position: absolute;
+  top: 24px;
+  left: 150px;
+  right: 200px;
+  bottom: 0;
+  overflow: auto;
+}
+
+.canvas-div {
+  display: inline-block;
+  position: absolute;
 }

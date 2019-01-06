@@ -18,12 +18,12 @@ export default function (menuList) {
     if (m.line && menuList.indexOf(m) !== menuList.length - 1) {
       item.classList.add('line');
     }
-    if (!m.isAvaliable()) {
+    if (!m.isAvailable()) {
       disabled = true;
       item.classList.add('disabled');
     }
 
-    item.addEventListener('click', function (e) {
+    item.addEventListener('click', function () {
       if (disabled) {
         return;
       }
@@ -57,11 +57,11 @@ export default function (menuList) {
           if (c.line) {
             util.addClass(_item, [c.className ? c.className : 'sub-item']);
           }
-          if (!c.isAvaliable()) {
+          if (!c.isAvailable()) {
             _disabled = true;
             _item.classList.add('disabled');
           }
-          _item.addEventListener('click', function (e) {
+          _item.addEventListener('click', function () {
             if (_disabled) {
               return;
             }
@@ -78,7 +78,7 @@ export default function (menuList) {
           _item.addEventListener('mouseleave', function (e) {
             e.stopPropagation();
             _item.classList.remove('hover');
-          })
+          });
           subDoc.appendChild(_item);
         }
         document.body.appendChild(subDoc);
@@ -89,12 +89,12 @@ export default function (menuList) {
       }
     });
 
-    function clearSubMenu (e) {
+    let clearSubMenu = function () {
       item.classList.remove('hover');
-    }
+    };
 
     item.addEventListener('mouseleave', clearSubMenu);
-    document.addEventListener('mouseover', function (e) {
+    document.addEventListener('mouseover', function () {
       if (subDoc) {
         subDoc.remove();
         subDoc = null;
@@ -104,6 +104,7 @@ export default function (menuList) {
     item.title = m.title;
     doc.appendChild(item);
   }
+
 
   function getElement() {
     return doc;

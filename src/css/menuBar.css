@@ -1,3 +1,6 @@
 .menubar {
+  position: relative;
+  top: 50%;
   color: #fff;
+  transform: translateY(-50%);
 }

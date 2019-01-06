@@ -1,7 +1,9 @@
 import * as util from '../util/util.js';
 import initGL from '../gl/initGL.js';
 import {VERTEX_SHADER_SOURCE, FRAG_SHADER_SOURCE} from '../gl/GLSL.js';
+import Enum_Size from '../Enum/Size.js';
 
+const MARGIN = 50;
 /**
  * @return {MyCanvas}
  */
@@ -14,13 +16,15 @@ export default function (width, height) {
     canvas.width = width;
     canvas.height = height;
     let scale = width / height;
-    if (width > window.innerWidth) {
-      canvas.style.width = window.innerWidth - 50 + 'px';
-      canvas.style.height = window.innerWidth / scale + 'px';
+    let widthThreshOld = window.innerWidth - (Enum_Size.toolBoxAreaWidth + Enum_Size.infoAreaWidth + MARGIN);
+    let heightThreshOld = window.innerHeight - (Enum_Size.menuBarAreaHeight + MARGIN);
+    if (width >= height && width > widthThreshOld) {
+      canvas.style.width = widthThreshOld + 'px';
+      canvas.style.height = widthThreshOld / scale + 'px';
     }
-    if (height > window.innerHeight) {
-      canvas.style.height = window.innerHeight - 50 + 'px';
-      canvas.style.width = window.innerHeight * scale + 'px';
+    if (height > width && height > heightThreshOld) {
+      canvas.style.height = heightThreshOld + 'px';
+      canvas.style.width = heightThreshOld * scale + 'px';
     }
   }
   util.appendChildren(doc, canvas);
@@ -87,6 +91,8 @@ export default function (width, height) {
    *
    * @param {WebGLRenderingContext} gl
    * @param {Number} n
+   * @param {string} src
+   * @param {string} type
    */
   function initTexture(gl, n, src, type) {
     let texture = gl.createTexture();
@@ -95,14 +101,14 @@ export default function (width, height) {
       var image = new Image();
       image.onload = function () {
         loadTexture(gl, n, texture, u_Sampler, image);
-      }
+      };
       image.src = src;
       return true;
     } else if (type === 'video') {
       var video = document.createElement('video');
       video.oncanplaythrough = function () {
         loadTexture(gl, n, texture, u_Sampler, video);
-      }
+      };
       video.src = src;
       return true;
     } else {
@@ -116,7 +122,7 @@ export default function (width, height) {
    * @param {Number} n
    * @param {WebGLTexture} texture
    * @param {WebGLUniformLocation} u_Sampler
-   * @param {*} image
+   * @param {*} media
    */
   function loadTexture(gl, n, texture, u_Sampler, media) {
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1); // reverse texture image in y axis
@@ -159,6 +165,11 @@ export default function (width, height) {
     canvas: {
       get() {
         return canvas;
+      }
+    },
+    canvasDIV: {
+      get () {
+        return doc;
       }
     }
   });

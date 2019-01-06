@@ -1,5 +1,5 @@
 declare namespace SubMenu {
-  function isAvaliable () : boolean;
+  function isAvailable () : boolean;
   function isHighlight () : boolean;
   function callback () : any;
   let title: string;
@@ -8,7 +8,7 @@ declare namespace SubMenu {
 }
 
 interface SubMenu {
-  isAvaliable (): boolean;
+  isAvailable (): boolean;
   isHighlight(): boolean;
   callback(): any;
   title: string;
@@ -18,7 +18,7 @@ interface SubMenu {
 }
 
 declare namespace MenuItem {
-  function isAvaliable ():boolean;
+  function isAvailable ():boolean;
   function isHighlight ():boolean;
   function callback (): any;
   let title: string;
@@ -32,4 +32,13 @@ declare namespace MyCanvas {
   function remove(): void;
   function drawImage(img: HTMLElement, sx: number, sy: number, dWidth: number, dHeight: number): void;
   let canvas: HTMLCanvasElement;
+}
+
+declare namespace Panel {
+  let menuBarArea: HTMLElement;
+  let toolBoxArea: HTMLElement;
+  let infoArea: HTMLElement;
+  let editArea: HTMLElement;
+  function getElement () : HTMLElement;
+  function remove(): void;
 }
